@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:state_managements_options/counter_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:state_managements_options/counter_bloc.dart';
 
 class CounterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final counter = Provider.of<CounterModel>(context);
+    // final counter = Provider.of<CounterModel>(context);
+    final counterBloc = BlocProvider.of<CounterCubit>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Counter App'),
@@ -15,9 +17,12 @@ class CounterScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              '${counter.currentCounter}',
-              style: TextStyle(fontSize: 35.0),
+            BlocBuilder<CounterCubit, int>(
+              builder: (context, count) => Text(
+                //'${counter.currentCounter}',
+                '$count',
+                style: TextStyle(fontSize: 35.0),
+              ),
             ),
             SizedBox(height: 20.0),
             Row(
@@ -29,7 +34,8 @@ class CounterScreen extends StatelessWidget {
                     color: Colors.red,
                     size: 30.0,
                   ),
-                  onPressed: () => counter.increment(),
+                  //   onPressed: () => counter.increment(),
+                  onPressed: () => counterBloc.decrement(),
                 ),
                 IconButton(
                   icon: Icon(
@@ -37,7 +43,8 @@ class CounterScreen extends StatelessWidget {
                     color: Colors.blue,
                     size: 30.0,
                   ),
-                  onPressed: () => counter.decremnet(),
+                  // onPressed: () => counter.decremnet(),
+                  onPressed: () => counterBloc.incremnent(),
                 ),
               ],
             )
